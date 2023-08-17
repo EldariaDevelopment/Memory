@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sleek Input Website</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="top-right">
+      <button id="toggle-visibility-button" class="button">Toggle Visibility</button>
+      <button id="toggle-button" class="button">Toggle Color Scheme</button>
+      <button id="change-password" class="button">change passworde</button>
+    </div>
+    <div class="textbox-container">
+      <div id="expected-text"></div>
+      <input type="text" id="user-input" placeholder="Type here">
+    </div>
+  </div>
+  
+  <div class="debug-container">
+    <h2>Debug Information</h2>
+    <p>Visibility Toggle: <span id="visibility-state">Enabled</span></p>
+    <p>Color Toggle: <span id="color-state">Standard</span></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 400px;
+}
+
+.textbox-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#expected-text {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-bottom: 2px solid #007bff;
+}
+
+.toggle-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Rest of the styling remains the same */
+
+</style>
+
+
+
+<style>
+    .typingtest-scheme {
+  background-color: #1d1d1d;
+  color: #ffffff;
+}
+
+.typingtest-scheme .container {
+  background-color: #323232;
+}
+
+.typingtest-scheme #expected-text {
+  color: #fff;
+}
+
+.typingtest-scheme input[type="text"] {
+  border-bottom: 2px solid #007bff;
+  color: #fff;
+}
+
+/* ... Rest of the existing styling ... */
+</style>
+
+<style>
+/* ... Existing CSS rules ... */
+
+.button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+}
+
+/* Add margin-right for spacing */
+.button + .button {
+  margin-left: 10px;
+}
+
+/* ... Rest of the existing styling ... */
+
+</style>
+
+
+
+
+<style>
+/* ... Your existing CSS rules ... */
+
+.debug-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* Initially hidden */
+  opacity: 0;
+  transform: translateX(100%);
+
+  /* Animation for sliding in */
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.typingtest-scheme .debug-container {
+  background-color: #333;
+  color: #f9f9f9;
+}
+
+.show-debug {
+  /* Make it visible */
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ... Rest of the existing styling ... */
+
+</style>
+
+
+<!--- highlight--> 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const userInput = document.getElementById('user-input');
+  //914877269223
+  var expectedText = '914877269223'; // Change this to your desired expected text
+  var expectedTextElement = document.getElementById('expected-text');
+  const toggleButton = document.getElementById('toggle-button');
+  const toggleVisibilityButton = document.getElementById('toggle-visibility-button');
+
+  let isTypingTestScheme = false;
+  let isVisibilityEnabled = false;
+
+  expectedTextElement.textContent = expectedText;
+
+  userInput.addEventListener('input', function() {
+    var inputText = userInput.value.toLowerCase();
+    var expectedWords = expectedText.split(' ');
+    var inputWords = inputText.split(' ');
+
+    expectedTextElement.innerHTML = isVisibilityEnabled ? getHighlightedText(expectedWords, inputWords) : expectedText;
+
+    if (inputText === expectedText.toLowerCase()) {
+      userInput.style.borderColor = '#4CAF50'; // Green border color
+    } else {
+      userInput.style.borderColor = '#FF5733'; // Red border color
+    }
+  });
+
+  toggleButton.addEventListener('click', function() {
+    isTypingTestScheme = !isTypingTestScheme;
+
+    if (isTypingTestScheme) {
+      document.body.classList.add('typingtest-scheme');
+    } else {
+      document.body.classList.remove('typingtest-scheme');
+    }
+  });
+
+  toggleVisibilityButton.addEventListener('click', function() {
+    isVisibilityEnabled = !isVisibilityEnabled;
+    userInput.dispatchEvent(new Event('input'));
+  });
+
+  function getHighlightedText(expectedWords, inputWords) {
+    let highlighted = '';
+    for (let i = 0; i < expectedWords.length; i++) {
+      var expectedWord = expectedWords[i].toLowerCase();
+      var inputWord = (inputWords[i] || '').toLowerCase();
+      var minLength = Math.min(expectedWord.length, inputWord.length);
+
+      for (let j = 0; j < minLength; j++) {
+        if (inputWord[j] === expectedWord[j]) {
+          highlighted += `<span style="color: ${isTypingTestScheme ? '#007bff' : '#4CAF50'};">${expectedWord[j]}</span>`;
+        } else {
+          highlighted += `<span style="color: ${isTypingTestScheme ? '#FF5733' : 'red'};">${expectedWord[j]}</span>`;
+        }
+      }
+
+      highlighted += ' ';
+    }
+
+    return highlighted;
+  }
+});
+
+</script>
+
+
+<!--- buttons--> 
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleButton = document.getElementById('toggle-button');
+  const ChangePasswordButton = document.getElementById('change-password');
+
+  const toggleVisibilityButton = document.getElementById('toggle-visibility-button');
+  const visibilityState = document.getElementById('visibility-state');
+  const colorState = document.getElementById('color-state');
+  let isTypingTestScheme = false; // Added this line
+  let isVisibilityEnabled = true;
+
+  ChangePasswordButton.addEventListener('click', function() {
+    function generateRandomNumberString(length) {
+    let result = '';
+    const characters = '0123456789'; // Characters to choose from
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+    }
+
+    return result;
+    }
+
+    const randomString = generateRandomNumberString(10); // Change 10 to your desired string length
+    // function ChangeExpectedText(text) {
+    //     expectedText = text;
+    //     expectedTextElement = expectedText
+    // }
+
+    // ChangeExpectedText(randomString);
+    
+    var expectedText = randomString;
+    var expectedTextElement = expectedText;
+    var expectedTextElement.textContent = expectedText;
+    var expectedWords = expectedText.split(' ');
+
+    document.getElementById('expected-text').innerHTML = expectedText;
+  });
+
+  toggleButton.addEventListener('click', function() {
+    isTypingTestScheme = !isTypingTestScheme;
+    updateColorToggleState();
+
+    if (isTypingTestScheme) {
+      document.body.classList.add('typingtest-scheme');
+    } else {
+      document.body.classList.remove('typingtest-scheme');
+    }
+  });
+
+
+  toggleVisibilityButton.addEventListener('click', function() {
+    isVisibilityEnabled = !isVisibilityEnabled;
+    updateVisibilityToggleState();
+    updateExpectedText(); // You should call this function since it's shared
+  });
+
+  function updateVisibilityToggleState() {
+    visibilityState.textContent = isVisibilityEnabled ? 'Enabled' : 'Disabled';
+  }
+
+  function updateColorToggleState() {
+    colorState.textContent = isTypingTestScheme ? 'Typing Test' : 'Standard';
+  }
+});
+
+</script>
+
+
+<!--- debug --> 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+  const debugContainer = document.querySelector('.debug-container');
+  let isDebugVisible = false;
+
+  // Toggle debug GUI's visibility when the "h" key is pressed
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'h') {
+      isDebugVisible = !isDebugVisible;
+      debugContainer.classList.toggle('show-debug', isDebugVisible);
+    }
+  });
+
+  // Rest of your debug-related code...
+});
+
+</script>
